@@ -1,0 +1,371 @@
+<!doctype html>
+<html>
+<head>
+<title>Streaming Live | [App by BlueCodeXX]</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<link rel="stylesheet" href="jwplayer.css" />
+<style>
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #000;
+    margin: 0;
+}
+#vplayer {
+    height: 100% !important;
+    width: 100% !important;
+    position: absolute;
+}
+.swee__overlay {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(3px);
+    justify-content: center;
+    align-items: center;
+}
+.swee__modal {
+    background: #111;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow:
+        0 0 10px rgba(0, 255, 255, 0.4),
+        0 0 20px rgba(0, 255, 255, 0.3),
+        0 0 40px rgba(0, 255, 255, 0.2);
+}
+.swee__message {
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+.swee__button {
+    background: linear-gradient(145deg, #00ffff, #00cccc);
+    color: #000;
+    padding: 0.6rem 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    font-size: 13.5px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+.swee__button:hover {
+    background: #00dddd;
+}
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+}
+.toast-message {
+    background: linear-gradient(180deg, #111, #000);
+    color: #00ffff;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-shadow:
+        0 0 4px rgba(0, 255, 255, 0.2),
+        0 0 8px rgba(0, 255, 255, 0.1);
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    animation: fadeSlide 0.4s ease-out;
+}
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+}
+</style>
+</head>
+<body>
+
+<div id="vplayer"></div>
+
+<div class="swee__overlay" id="swee__dialog">
+    <div class="swee__modal">
+      <h1 class="swee__message"></h1>
+      <button class="swee__button" onclick="hideOverlayz()">Close <i class="fa-solid fa-xmark"></i></button> <button class="swee__button" onclick="location.href='index.html'"><i class="fa-solid fa-house"></i> Home</button>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="https://content.jwplatform.com/libraries/KB5zFt7A.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/manuelmhtr/countries-and-timezones@latest/dist/index.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script>
+let playerInstance;
+let retryCount = 0;
+
+$(document).ready(function () {
+    appMetaData();
+    initPlayer();
+});
+
+function appMetaData()
+{
+    $.ajax({
+        url: "rest_api.php?action=site_metadata",
+        type: "GET",
+        success: function (data)
+        {
+          try { data = JSON.parse(data); } catch (err) {}
+          if (data.status === "success")
+          {
+            sessionStorage.setItem("app_name", data.data.title);
+            document.title = "Streaming Live | " + data.data.title;
+            $("head").append('<link rel="shortcut icon" href="' + data.data.favicon + '" />');
+            $("#applogoz").attr("src", data.data.logo);
+            if(data.data.login !== "true" && data.data.login !== true)
+            {
+                triggerErrorDialog("Please Login To Watch The Stream");
+            }
+          }
+        }
+    });
+}
+
+function initPlayer()
+{
+    let channelID = getURLParameterByName("id");
+    $.ajax({
+        url: "rest_api.php?action=get_channel_detail&streamid=" + channelID,
+        type: "GET",
+        success: function (data)
+        {
+          try { data = JSON.parse(data); } catch (err) {}
+          if (data.status === "success")
+          {
+            document.title = data.data.title + " | " + sessionStorage.getItem("app_name");
+            sessionStorage.setItem("channelName", data.data.title);
+            if(data.data.title.includes("*"))
+            {
+              attachDRMPlayer("dlive.php?id=" + channelID + "&format=.mpd", "dlive.php?id=" + channelID + "&wvlic=true");
+            }
+            else
+            {
+              attachPlayer("live.php?id=" + channelID + "&format=.m3u8"); 
+            }
+          }
+          else if(data.status == "error")
+          {
+            triggerErrorDialog(data.message);
+          }
+          else
+          {
+            triggerErrorDialog("Something Went Wrong");
+          }
+        },
+        error: function () {
+          triggerErrorDialog("Network or API Threw Error");
+        }
+    });
+}
+
+function triggerErrorDialog(text)
+{
+  $('#swee__dialog .swee__message').text(text);
+  $('#swee__dialog').css('display', 'flex').hide().fadeIn(300);
+}
+
+function hideOverlayz()
+{
+  $('#swee__dialog').fadeOut();
+}
+
+function showToast(message)
+{
+  const $toast = $('<div class="toast-message"></div>').text(message);
+  $("#toastContainer").append($toast);
+  setTimeout(() => {
+    $toast.fadeOut(500, function () {
+      $(this).remove();
+    });
+  }, 3000);
+}
+
+function attachPlayer(playurl)
+{
+  playerInstance = jwplayer("vplayer").setup({
+        controls: true,
+        displaytitle: true,
+        autoplay: true,
+        displaydescription: true,
+        skin: { name: "netflix" },
+        captions: {
+          color: "#FFF", fontSize: 14,
+          backgroundOpacity: 0, edgeStyle: "raised"
+        },
+        playlist: [{
+          title: sessionStorage.getItem("channelName"),
+          description: "You are Watching",
+          sources: [{
+            file: playurl,
+            type: "hls",
+            default: true
+          }]
+        }]
+  });
+
+  playerInstance.on("play", function () {
+    if (retryCount === 0) {
+      showToast("Playing Now: " + sessionStorage.getItem("channelName"));
+      hideOverlayz();
+    }
+  });
+
+  playerInstance.on("error", function () {
+    retryCount++;
+    if (retryCount <= 4)
+    {
+      showToast("Playback failed. Retrying... (" + retryCount + "/4)");
+      setTimeout(() => {
+        playerInstance.remove();
+        attachPlayer(playurl);
+      }, 1000);
+    }
+    else
+    {
+      triggerErrorDialog("Playback Error: Unable to load stream.");
+    }
+  });
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ //
+
+function attachDRMPlayer(playurl, widevineurl)
+{
+  playerInstance = jwplayer("vplayer").setup({
+    controls: true,
+    displaytitle: true,
+    autoplay: true,
+    displaydescription: true,
+    skin: { name: "netflix" },
+    captions: {
+      color: "#FFF",
+      fontSize: 14,
+      backgroundOpacity: 0,
+      edgeStyle: "raised"
+    },
+    playlist: [{
+      title: sessionStorage.getItem("channelName"),
+      description: "You are Watching",
+      sources: [{
+        file: playurl,
+        type: "dash",
+        drm: {
+          widevine: {
+            url: widevineurl
+          }
+        },
+        default: true
+      }]
+    }]
+  });
+
+  playerInstance.on("play", function () {
+    if (retryCount === 0) {
+      showToast("Playing Now: " + sessionStorage.getItem("channelName"));
+      hideOverlayz();
+    }
+  });
+
+  playerInstance.on("error", function () {
+    retryCount++;
+    if (retryCount <= 4) {
+      showToast("Playback failed. Retrying... (" + retryCount + "/4)");
+      setTimeout(() => {
+        playerInstance.remove();
+        attachDRMPlayer(playurl, widevineurl);
+      }, 1000);
+    } else {
+      triggerErrorDialog("Playback Error: Unable to load DRM stream.");
+    }
+  });
+}
+
+/*******************************************************************/
+/*****          X H R   L O G I C   I N T E R C E P T          *****/
+/*******************************************************************/
+(function () {
+  function xorEncryptDecrypt(mode, str)
+  {
+    let result = "";
+    let key = "Vpe2XL7ypaz8h8IkHqfn9vkRDktxsyBE9FRPepIP";
+    for (let i = 0; i < str.length; i++) {
+      result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+    }
+    return mode === 'encrypt' ? encodeURIComponent(btoa(result)) : atob(decodeURIComponent(str));
+  }
+  function getCookieByName(name)
+  {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [key, value] = cookie.trim().split('=');
+      if (key === name) {
+        return decodeURIComponent(value);
+      }
+    }
+    return false;
+  }
+
+  const originalOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (method, url, ...rest)
+  {
+    if (typeof url === 'string' && url.includes('jio.com'))
+    {
+      if (url.match(/\.(key|pkey)(\?|$)/))
+      {
+        const encryptedURL = xorEncryptDecrypt('encrypt', url);
+        url = `live.php?cid=` + getURLParameterByName('id') + `&xhrkey=${encryptedURL}`;
+      }
+      else
+      {
+        let hdnea = '';
+        const hdneaXn = getCookieByName('jiobpksession');
+        if (hdneaXn) {
+          try {
+            hdnea = atob(atob(hdneaXn));
+          } catch (e) {
+            console.warn('Invalid base64 in jiobpksession');
+          }
+        }
+        if (hdnea) {
+          const connector = url.includes('?') ? '&' : '?';
+          if (!url.includes('__hdnea__=')) {
+            url += `${connector}${decodeURIComponent(hdnea)}`;
+          }
+        }
+      }
+    }
+    return originalOpen.call(this, method, url, ...rest);
+  };
+})();
+
+function getURLParameterByName(name)
+{
+  name = name.replace(/[\[\]]/g, '\\$&');
+  const url = window.location.href;
+  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+  const results = regex.exec(url);
+  if (!results || !results[2]) return null;
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+</script>
+</body>
+</html>
