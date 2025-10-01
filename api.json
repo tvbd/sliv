@@ -1,0 +1,174 @@
+{
+    "status": "success",
+    "data": {
+        "list": [
+            {
+                "id": "3fd99e",
+                "title": "SET HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_HD.png",
+                "genre": "Entertainment",
+                "language": "Hindi"
+            },
+            {
+                "id": "320821",
+                "title": "Sony SAB HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_SAB_HD.png",
+                "genre": "Entertainment",
+                "language": "Hindi"
+            },
+            {
+                "id": "1bec0a",
+                "title": "Sony Marathi",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Marathi_SD.png",
+                "genre": "Entertainment",
+                "language": "Marathi"
+            },
+            {
+                "id": "87ed41",
+                "title": "Sony Pal",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Pal.png",
+                "genre": "Entertainment",
+                "language": "Hindi"
+            },
+            {
+                "id": "429ad3",
+                "title": "Sony Aath",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_aath.png",
+                "genre": "Entertainment",
+                "language": "Bengali"
+            },
+            {
+                "id": "3863e9",
+                "title": "Sony Yay",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Yay_Hindi.png",
+                "genre": "Kids",
+                "language": "Hindi"
+            },
+            {
+                "id": "b24815",
+                "title": "Sony MAX HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Max_HD.png",
+                "genre": "Movies",
+                "language": "Hindi"
+            },
+            {
+                "id": "095ddc",
+                "title": "Sony MAX",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/SET_MAX.png",
+                "genre": "Movies",
+                "language": "Hindi"
+            },
+            {
+                "id": "b19b2d",
+                "title": "Sony MAX 2",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_MAX2.png",
+                "genre": "Movies",
+                "language": "Hindi"
+            },
+            {
+                "id": "980aee",
+                "title": "Sony WAH",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Wah.png",
+                "genre": "Movies",
+                "language": "Hindi"
+            },
+            {
+                "id": "60557a",
+                "title": "Sony PIX HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_Pix_HD.png",
+                "genre": "Movies",
+                "language": "English"
+            },
+            {
+                "id": "c80a20",
+                "title": "Sony BBC Earth HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_BBC_Earth_HD.png",
+                "genre": "Infotainment",
+                "language": "English"
+            },
+            {
+                "id": "6ea95e",
+                "title": "Sony Sports Ten 1",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Ten_1.png",
+                "genre": "Sports",
+                "language": "English"
+            },
+            {
+                "id": "5a31a1",
+                "title": "Sony Sports Ten 2",
+                "logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Ten_2.png",
+                "genre": "Sports",
+                "language": "English"
+            },
+            {
+                "id": "84eec5",
+                "title": "Sony Sports Ten 3",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Ten_3.png",
+                "genre": "Sports",
+                "language": "Hindi"
+            },
+            {
+                "id": "29f436",
+                "title": "Sony Sports Ten 4",
+                "logo": "https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen4_SD_Logo_CLR.png",
+                "genre": "Sports",
+                "language": "Hindi"
+            },
+            {
+                "id": "994200",
+                "title": "Sony Sports Ten 5",
+                "logo": "https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen5_SD_Logo_CLR.png",
+                "genre": "Sports",
+                "language": "English"
+            },
+            {
+                "id": "d3e729",
+                "title": "Sony Sports Ten 1 HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Ten_HD.png",
+                "genre": "Sports",
+                "language": "English"
+            },
+            {
+                "id": "da3ab5",
+                "title": "Sony Sports Ten 2 HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Ten2_HD.png",
+                "genre": "Sports",
+                "language": "English"
+            },
+            {
+                "id": "1f0f53",
+                "title": "Sony Sports Ten 3 HD",
+                "logo": "http://jiotv.catchup.cdn.jio.com/dare_images/images/Ten3_HD.png",
+                "genre": "Sports",
+                "language": "Hindi"
+            },
+            {
+                "id": "f03604",
+                "title": "Sony Sports Ten 4 HD",
+                "logo": "https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen4_HD_Logo_CLR.png",
+                "genre": "Sports",
+                "language": "Hindi"
+            },
+            {
+                "id": "e4e716",
+                "title": "Sony Sports Ten 5 HD",
+                "logo": "https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen5_HD_Logo_CLR.png",
+                "genre": "Sports",
+                "language": "English"
+            }
+        ],
+        "genre": [
+            "Entertainment",
+            "Kids",
+            "Movies",
+            "Infotainment",
+            "Sports"
+        ],
+        "language": [
+            "Hindi",
+            "Marathi",
+            "Bengali",
+            "English"
+        ]
+    }
+}
