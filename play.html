@@ -120,7 +120,7 @@ $(document).ready(function () {
 function appMetaData()
 {
     $.ajax({
-        url: "rest_api.php?action=site_metadata",
+        url: "api.json?action=site_metadata",
         type: "GET",
         success: function (data)
         {
@@ -144,7 +144,7 @@ function initPlayer()
 {
     let channelID = getURLParameterByName("id");
     $.ajax({
-        url: "rest_api.php?action=get_channel_detail&streamid=" + channelID,
+        url: "api.json?action=get_channel_detail&streamid=" + channelID,
         type: "GET",
         success: function (data)
         {
